@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NetworkMap from '@/views/NetworkMap'
+import SignRequests from '@/views/SignRequests'
 
 Vue.use(VueRouter)
 
@@ -13,6 +14,11 @@ const routes = [
     path: '/network-map',
     name: 'network-map',
     component: NetworkMap
+  },
+  {
+    path: '/sign-requests',
+    name: 'signing requests',
+    component: SignRequests
   },
   {
     path: '/about',

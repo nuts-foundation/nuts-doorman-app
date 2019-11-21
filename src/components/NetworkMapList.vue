@@ -3,23 +3,23 @@
     <tbody>
       <tr>
         <th>CommonName</th>
-        <th>Addresses</th>
         <th>Org</th>
         <th>Locality</th>
         <th>Country</th>
+        <th>Addresses</th>
       </tr>
-      <tr v-for="item in items" v-bind:key="item.legalEntity.commonName">
+      <tr v-for="item in networkMap" v-bind:key="item.legalName.commonName">
         <td >
-          {{ item.legalEntity.commonName }}
+          {{ item.legalName.commonName }}
         </td>
+        <td>{{ item.legalName.organisation }}</td>
+        <td>{{ item.legalName.locality }}</td>
+        <td>{{ item.legalName.country }}</td>
         <td>
           <p v-for="address in item.addresses" v-bind:key="address.host + address.port">
             tcp://{{ address.host }}:{{ address.port }}
           </p>
         </td>
-        <td>{{ item.legalEntity.organisation }}</td>
-        <td>{{ item.legalEntity.locality }}</td>
-        <td>{{ item.legalEntity.country }}</td>
       </tr>
     </tbody>
   </table>
@@ -29,17 +29,8 @@
 <script>
 export default {
   name: 'NetworkMapList',
-  data: () => {
-    return { items: [] }
-  },
-  mounted: async function () {
-    this.fetchNetworkMap()
-  },
-  methods: {
-    fetchNetworkMap: async function () {
-      const response = await fetch('http://localhost:8080/admin/network-map')
-      this.items = await response.json()
-    }
+  props: {
+    networkMap: Array
   }
 }
 </script>

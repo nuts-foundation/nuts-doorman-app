@@ -1,6 +1,6 @@
 <template>
   <div class="network-map">
-    <NetworkMapList/>
+    <NetworkMapList v-bind:networkMap="networkMap"/>
   </div>
 </template>
 
@@ -10,8 +10,20 @@ import NetworkMapList from '@/components/NetworkMapList'
 
 export default {
   name: 'network-map',
+  data () {
+    return { networkMap: [] }
+  },
   components: {
     NetworkMapList
+  },
+  mounted () {
+    this.fetchNetworkMap()
+  },
+  methods: {
+    fetchNetworkMap: async function () {
+      const response = await fetch('http://localhost:8080/admin/network-map')
+      this.networkMap = await response.json()
+    }
   }
 }
 </script>

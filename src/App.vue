@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/network-map">NetworkMap</router-link> |
+      <router-link to="/network-map">Network-Map</router-link> |
+      <router-link to="/sign-requests">Signing Requests</router-link> |
     </div>
     <router-view/>
   </div>
@@ -27,5 +28,16 @@
       color: #42b983;
     }
   }
+}
+
+table {
+  text-align: left;
+  width: 100%;
+}
+tr:nth-child(even){
+  background-color: azure;
+}
+td {
+  margin: 1em;
 }
 </style>
