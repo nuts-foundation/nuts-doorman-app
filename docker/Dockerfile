@@ -1,16 +1,5 @@
-FROM node:lts-alpine
+FROM node:lts-alpine as build-stage
 LABEL maintainer="steven.vandervegt@nedap.com"
-
-ARG VUE_APP_DOORMAN_URL
-RUN test -n "$VUE_APP_DOORMAN_URL"
-ENV VUE_APP_DOORMAN_URL=$VUE_APP_DOORMA_URL
-
-ARG VUE_APP_NETWORKMAP_URL
-RUN test -n "$VUE_APP_NETWORKMAP_URL"
-ENV VUE_APP_NETWORKMAP_URL=$VUE_APP_NETWORKMAP_URL
-
-# install simple http server for serving static content
-RUN npm install -g http-server
 
 # make the 'app' folder the current working directory
 WORKDIR /app
@@ -22,10 +11,17 @@ COPY package*.json ./
 RUN npm install
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
-COPY . .
+COPY ./ .
 
 # build app for production with minification
 RUN npm run build
 
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist/ /app
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8080
-CMD [ "http-server", "dist" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
