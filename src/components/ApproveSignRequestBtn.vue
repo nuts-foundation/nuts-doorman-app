@@ -10,7 +10,6 @@ export default {
   },
   methods: {
     approveSignRequest: async function () {
-      console.log(this.certificate)
       if (confirm(`Would you like to approve ${this.certificate.legalName.commonName}?`)) {
         this.$emit('approvalRequested')
       }
