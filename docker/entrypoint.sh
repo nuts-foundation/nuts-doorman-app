@@ -8,4 +8,4 @@ do
   envsubst '$VUE_APP_NETWORKMAP_URL,$VUE_APP_DOORMAN_URL' < $file.tmpl.js > $file
 done
 echo "Starting Nginx"
-nginx -g 'daemon off;'
+exec nginx -g 'daemon off;'
