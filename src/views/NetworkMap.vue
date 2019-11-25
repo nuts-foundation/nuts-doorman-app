@@ -1,6 +1,8 @@
 <template>
   <div class="network-map">
-    <NetworkMapList v-bind:networkMap="networkMap"/>
+    <b-spinner label="Spinning" v-if="!networkMap"></b-spinner>
+    <NetworkMapList v-bind:networkMap="networkMap" v-else-if="networkMap.length > 0"/>
+    <p v-else>No nodes found</p>
   </div>
 </template>
 
@@ -13,7 +15,7 @@ export default {
   name: 'network-map',
   mixins: [Config],
   data () {
-    return { networkMap: [] }
+    return { networkMap: null }
   },
   components: {
     NetworkMapList

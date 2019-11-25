@@ -4,7 +4,9 @@
       v-bind:message="statusMsg"
       v-bind:type="statusType"
     ></StatusAlert>
-    <SignRequestList v-bind:signRequests="signRequests" @approve="approveSignatureSigningRequests"></SignRequestList>
+    <b-spinner label="Spinning" v-if="!signRequests"></b-spinner>
+    <SignRequestList v-else-if="signRequests.length > 0" v-bind:signRequests="signRequests" @approve="approveSignatureSigningRequests"></SignRequestList>
+    <p v-else>No sign requests found</p>
   </section>
 </template>
 
@@ -18,7 +20,7 @@ export default {
   mixins: [Config],
   data () {
     return {
-      signRequests: [],
+      signRequests: null,
       statusMsg: '',
       statusType: ''
     }

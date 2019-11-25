@@ -1,6 +1,6 @@
 <template>
   <section>
-    <table v-if="signRequests.length > 0">
+    <table>
       <tbody>
         <tr>
           <th>CommonName</th>
@@ -35,7 +35,6 @@
         </template>
       </tbody>
     </table>
-    <p v-else>No pending signing requests</p>
   </section>
 </template>
 
