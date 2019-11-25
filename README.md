@@ -37,5 +37,5 @@ docker build -t nutsfoundation/nuts-doorman-app:latest-dev -f docker/Dockerfile 
 
 Run with correct backend endpoints:
 ```
-docker run -p 8081:8080 --env VUE_APP_NETWORKMAP_URL=34.90.36.239:8080 --env VUE_APP_DOORMAN_URL=34.90.36.239:8080 nutsfoundation/nuts-doorman-app:latest-dev
+docker run -p 8081:8080 --env NUTS_NETWORKMAP_URL=discovery-development.nuts.nl --env NUTS_DOORMAN_URL=discovery.nuts.nl nutsfoundation/nuts-doorman-app:latest-dev
 ```

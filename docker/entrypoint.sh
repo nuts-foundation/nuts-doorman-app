@@ -5,7 +5,7 @@ do
     cp $file $file.tmpl.js
   fi
   echo "substituting $file"
-  envsubst '$VUE_APP_NETWORKMAP_URL,$VUE_APP_DOORMAN_URL' < $file.tmpl.js > $file
+  envsubst '$NUTS_NETWORKMAP_URL,$NUTS_DOORMAN_URL' < $file.tmpl.js > $file
 done
 echo "Starting Nginx"
 exec nginx -g 'daemon off;'

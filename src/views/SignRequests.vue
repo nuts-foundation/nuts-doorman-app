@@ -26,13 +26,13 @@ export default {
   },
   methods: {
     fetchSignatureSigningRequests: async function () {
-      const url = process.env.VUE_APP_DOORMAN_URL
+      const url = '$NUTS_DOORMAN_URL'
       const response = await fetch(`http://${url}/admin/certificates/signrequests`)
       this.signRequests = await response.json()
     },
     approveSignatureSigningRequests: async function (request) {
       try {
-        const url = process.env.VUE_APP_DOORMAN_URL
+        const url = '$NUTS_DOORMAN_URL'
         const response = await fetch(`http://${url}/admin/certificates/signrequests/${request.legalName.x500Principal.name}/approve`, {
           method: 'PUT'
         })

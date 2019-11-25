@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     fetchNetworkMap: async function () {
-      const url = process.env.VUE_APP_NETWORKMAP_URL
+      const url = '$NUTS_NETWORKMAP_URL'
       const response = await fetch(`http://${url}/admin/network-map`)
       this.networkMap = await response.json()
     }
