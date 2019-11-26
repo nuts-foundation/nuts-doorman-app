@@ -1,5 +1,5 @@
 <template>
-  <button v-on:click="approveSignRequest">Approve</button>
+  <b-button v-on:click="approveSignRequest">Approve</b-button>
 </template>
 
 <script>

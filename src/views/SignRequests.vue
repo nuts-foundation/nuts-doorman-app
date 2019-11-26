@@ -4,8 +4,9 @@
       v-bind:message="statusMsg"
       v-bind:type="statusType"
     ></StatusAlert>
-    <b-spinner label="Spinning" v-if="!signRequests"></b-spinner>
-    <SignRequestList v-else-if="signRequests.length > 0" v-bind:signRequests="signRequests" @approve="approveSignatureSigningRequests"></SignRequestList>
+    <b-spinner label="Spinning" v-if="!signRequests && !error"></b-spinner>
+    <SignRequestList v-else-if="signRequests && signRequests.length > 0" v-bind:signRequests="signRequests" @approve="approveSignatureSigningRequests"></SignRequestList>
+    <b-alert v-else-if="error" show variant="danger">{{ error }}</b-alert>
     <p v-else>No sign requests found</p>
   </section>
 </template>
@@ -21,6 +22,7 @@ export default {
   data () {
     return {
       signRequests: null,
+      error: null,
       statusMsg: '',
       statusType: ''
     }

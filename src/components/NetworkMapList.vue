@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table striped :items="networkMap" :fields="fields">
+    <b-table striped responsive :items="networkMap" :fields="fields">
       <template v-slot:cell(addresses)="data">
         tcp://{{ data.item.addresses[0].host }}:{{ data.item.addresses[0].port }}
       </template>

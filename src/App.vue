@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <b-container id="app">
     <div id="nav">
       <router-link to="/network-map">Network-Map</router-link> |
       <router-link to="/sign-requests">Signing Requests</router-link> |
     </div>
     <router-view/>
-  </div>
+  </b-container>
 </template>
 
 <style lang="scss">

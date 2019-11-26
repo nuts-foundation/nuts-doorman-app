@@ -1,9 +1,10 @@
 <template>
-  <div class="network-map">
-    <b-spinner label="Spinning" v-if="!networkMap"></b-spinner>
-    <NetworkMapList v-bind:networkMap="networkMap" v-else-if="networkMap.length > 0"/>
+  <b-container class="network-map">
+    <b-spinner label="Spinning" v-if="!networkMap && !error"></b-spinner>
+    <NetworkMapList v-bind:networkMap="networkMap" v-else-if="networkMap && networkMap.length > 0"/>
+    <b-alert v-else-if="error" show variant="danger">{{ error }}</b-alert>
     <p v-else>No nodes found</p>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -15,7 +16,10 @@ export default {
   name: 'network-map',
   mixins: [Config],
   data () {
-    return { networkMap: null }
+    return {
+      networkMap: null,
+      error: null
+    }
   },
   components: {
     NetworkMapList
@@ -26,8 +30,12 @@ export default {
   methods: {
     fetchNetworkMap: async function () {
       const url = this.config.networkMapUrl
-      const response = await fetch(`${url}/admin/network-map`)
-      this.networkMap = await response.json()
+      try {
+        const response = await fetch(`${url}/admin/network-map`)
+        this.networkMap = await response.json()
+      } catch (e) {
+        this.error = e.message
+      }
     }
   }
 }
