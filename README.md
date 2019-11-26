@@ -7,7 +7,7 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+VUE_APP_NUTS_DOORMAN_URL=http://discovery-development.nuts.nl VUE_APP_NUTS_NETWORKMAP_URL=http://discovery-development.nuts.nl npm run serve
 ```
 
 ### Compiles and minifies for production

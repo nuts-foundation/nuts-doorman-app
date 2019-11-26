@@ -7,9 +7,11 @@
 <script>
 // @ is an alias to /src
 import NetworkMapList from '@/components/NetworkMapList'
+import Config from '../mixins/config'
 
 export default {
   name: 'network-map',
+  mixins: [Config],
   data () {
     return { networkMap: [] }
   },
@@ -21,8 +23,8 @@ export default {
   },
   methods: {
     fetchNetworkMap: async function () {
-      const url = '$NUTS_NETWORKMAP_URL'
-      const response = await fetch(`http://${url}/admin/network-map`)
+      const url = this.config.networkMapUrl
+      const response = await fetch(`${url}/admin/network-map`)
       this.networkMap = await response.json()
     }
   }

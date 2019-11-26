@@ -11,9 +11,11 @@
 <script>
 import SignRequestList from '../components/SignRequestList'
 import StatusAlert from '../components/StatusAlert'
+import Config from '../mixins/config'
 
 export default {
   name: 'SignRequests',
+  mixins: [Config],
   data () {
     return {
       signRequests: [],
@@ -26,14 +28,14 @@ export default {
   },
   methods: {
     fetchSignatureSigningRequests: async function () {
-      const url = '$NUTS_DOORMAN_URL'
-      const response = await fetch(`http://${url}/admin/certificates/signrequests`)
+      const url = this.config.doormanUrl
+      const response = await fetch(`${url}/admin/certificates/signrequests`)
       this.signRequests = await response.json()
     },
     approveSignatureSigningRequests: async function (request) {
       try {
-        const url = '$NUTS_DOORMAN_URL'
-        const response = await fetch(`http://${url}/admin/certificates/signrequests/${request.legalName.x500Principal.name}/approve`, {
+        const url = this.config.doormanUrl
+        const response = await fetch(`${url}/admin/certificates/signrequests/${request.legalName.x500Principal.name}/approve`, {
           method: 'PUT'
         })
         if (response.status === 200) {
