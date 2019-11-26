@@ -4,9 +4,20 @@
       <router-link to="/network-map">Network-Map</router-link> |
       <router-link to="/sign-requests">Signing Requests</router-link> |
     </div>
-    <router-view/>
+    <StatusAlert >
+      <router-view/>
+    </StatusAlert>
   </b-container>
 </template>
+
+<script>
+import StatusAlert from './components/StatusAlert'
+export default {
+  components: {
+    StatusAlert
+  }
+}
+</script>
 
 <style lang="scss">
 #app {

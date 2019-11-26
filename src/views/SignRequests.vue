@@ -1,9 +1,5 @@
 <template>
   <section>
-    <StatusAlert
-      v-bind:message="statusMsg"
-      v-bind:type="statusType"
-    ></StatusAlert>
     <b-spinner label="Spinning" v-if="!signRequests && !error"></b-spinner>
     <SignRequestList v-else-if="signRequests && signRequests.length > 0" v-bind:signRequests="signRequests" @approve="approveSignatureSigningRequests"></SignRequestList>
     <b-alert v-else-if="error" show variant="danger">{{ error }}</b-alert>
@@ -13,7 +9,6 @@
 
 <script>
 import SignRequestList from '../components/SignRequestList'
-import StatusAlert from '../components/StatusAlert'
 import Config from '../mixins/config'
 
 export default {
@@ -22,9 +17,7 @@ export default {
   data () {
     return {
       signRequests: null,
-      error: null,
-      statusMsg: '',
-      statusType: ''
+      error: null
     }
   },
   mounted () {
@@ -43,21 +36,21 @@ export default {
           method: 'PUT'
         })
         if (response.status === 200) {
-          this.statusMsg = `Approving node with name [${request.legalName.commonName}] succeeded`
-          this.statusType = 'info'
+          this.statusMessage(`Approving node with name [${request.legalName.commonName}] succeeded`, 'info')
+          this.fetchSignatureSigningRequests()
         } else {
-          this.statusMsg = `Approving node with name [${request.legalName.commonName}] failed. Reason: non 200 status`
-          this.statusType = 'fail'
+          this.statusMessage(`Approving node with name [${request.legalName.commonName}] failed. Reason: non 200 status`, 'danger')
         }
       } catch (e) {
-        this.statusMsg = `Approving node with name [${request.legalName.commonName}] failed. Reason: [${e.message}]`
-        this.statusType = 'fail'
+        this.statusMessage(`Approving node with name [${request.legalName.commonName}] failed. Reason: [${e.message}]`, 'danger')
       }
+    },
+    statusMessage: function (message, type) {
+      this.$parent.$emit('statusUpdate', { message, type })
     }
   },
   components: {
-    SignRequestList,
-    StatusAlert
+    SignRequestList
   }
 }
 </script>
