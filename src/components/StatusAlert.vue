@@ -1,21 +1,32 @@
 <template>
-  <p v-bind:class="type">
-    {{ message }}
-  </p>
+  <div>
+    <b-alert :variant="type" dismissible fade
+             :show="message"
+             @dismissed="dismiss">{{ message }}</b-alert>
+    <slot></slot>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'StatusAlert',
-  props: {
-    message: String,
-    type: String
+  data () {
+    return {
+      type: null,
+      message: null
+    }
+  },
+  created () {
+    this.$on('statusUpdate', function (status) {
+      this.message = status.message
+      this.type = status.type
+    })
+  },
+  methods: {
+    dismiss: function () {
+      this.message = null
+      this.type = null
+    }
   }
 }
 </script>
-
-<style>
-.fail {
-  border: 1px solid red;
-}
-</style>

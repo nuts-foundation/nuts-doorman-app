@@ -1,41 +1,17 @@
 <template>
   <section>
-    <table v-if="signRequests.length > 0">
-      <tbody>
-        <tr>
-          <th>CommonName</th>
-          <th>Org</th>
-          <th>Locality</th>
-          <th>Country</th>
-          <th>Email</th>
-          <th>Approved?</th>
-          <th>Notary?</th>
-          <th>Submission Time</th>
-          <th>Approve request</th>
-        </tr>
-        <template v-for="request in signRequests" >
-          <tr v-bind:key="request.commonName" @click="selectedRow=request.legalName.commonName">
-            <td>{{ request.legalName.commonName }}</td>
-            <td>{{ request.legalName.organisation }}</td>
-            <td>{{ request.legalName.locality }}</td>
-            <td>{{ request.legalName.country }}</td>
-            <td>{{ request.email }}</td>
-            <td>{{ request.approved}}</td>
-            <td>{{ request.notary }}</td>
-            <td>{{ request.submissionTime }}</td>
-            <ApproveSignRequestBtn v-bind:certificate="request" @approvalRequested="$emit('approve',request)"></ApproveSignRequestBtn>
-          </tr>
-          <tr v-bind:key="request.legalName.commonName" v-show="selectedRow===request.legalName.commonName">
-            <td colspan="9">
-              <pre>
-                {{ request.publicKey}}
-              </pre>
-            </td>
-          </tr>
-        </template>
-      </tbody>
-    </table>
-    <p v-else>No pending signing requests</p>
+    <b-table striped :items="signRequests" :fields="fields">
+      <template v-slot:cell(publicKey)="request">
+        <b-button :id="`popover-${request.index}`">Key</b-button>
+        <b-popover :target="`popover-${request.index}`" triggers="hover" placement="top">
+          <template v-slot:title>PublicKey of {{request.item.legalName.commonName}}</template>
+          <pre>{{ request.item.publicKey }}</pre>
+        </b-popover>
+      </template>
+      <template v-slot:cell(approve)="request">
+        <ApproveSignRequestBtn v-bind:certificate="request.item" @approvalRequested="$emit('approve',request.item)"></ApproveSignRequestBtn>
+      </template>
+    </b-table>
   </section>
 </template>
 
@@ -46,7 +22,24 @@ export default {
   name: 'SignRequestsList',
   components: { ApproveSignRequestBtn },
   data () {
-    return { selectedRow: '' }
+    return {
+      fields: [
+        { key: 'legalName.commonName', label: 'CommonName' },
+        { key: 'legalName.organisation', label: 'Org' },
+        { key: 'legalName.locality', label: 'Locality' },
+        { key: 'legalName.country', label: 'Country' },
+        { key: 'email', label: 'Email' },
+        { key: 'approved', label: 'Approved' },
+        { key: 'notary', label: 'Notary' },
+        {
+          key: 'submissionTime',
+          label: 'Submission Time',
+          formatter: (value, key, item) => new Date(item.submissionTime).toLocaleString()
+        },
+        { key: 'publicKey', label: 'PublicKey' },
+        { key: 'approve', label: 'Approve requests' }
+      ]
+    }
   },
   props: {
     signRequests: {

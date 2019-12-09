@@ -1,34 +1,27 @@
 <template>
-  <table>
-    <tbody>
-      <tr>
-        <th>CommonName</th>
-        <th>Org</th>
-        <th>Locality</th>
-        <th>Country</th>
-        <th>Addresses</th>
-      </tr>
-      <tr v-for="item in networkMap" v-bind:key="item.legalName.commonName">
-        <td >
-          {{ item.legalName.commonName }}
-        </td>
-        <td>{{ item.legalName.organisation }}</td>
-        <td>{{ item.legalName.locality }}</td>
-        <td>{{ item.legalName.country }}</td>
-        <td>
-          <p v-for="address in item.addresses" v-bind:key="address.host + address.port">
-            tcp://{{ address.host }}:{{ address.port }}
-          </p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
+  <div>
+    <b-table striped responsive :items="networkMap" :fields="fields">
+      <template v-slot:cell(addresses)="data">
+        tcp://{{ data.item.addresses[0].host }}:{{ data.item.addresses[0].port }}
+      </template>
+    </b-table>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'NetworkMapList',
+  data () {
+    return {
+      fields: [
+        { key: 'legalName.commonName', label: 'CommonName' },
+        { key: 'legalName.organisation', label: 'Org' },
+        { key: 'legalName.locality', label: 'Locality' },
+        { key: 'legalName.country', label: 'Country' },
+        { key: 'addresses', label: 'Addresses' }
+      ]
+    }
+  },
   props: {
     networkMap: Array
   }
